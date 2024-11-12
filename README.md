@@ -38,11 +38,15 @@ Despite quite a few efforts to debug and repair this issue, I was sadly unable t
 
 I apologise for not being able to get this working in the clean and robust way that we would all like! But in the spirit of not wasting too much time, I opted for the aforementioned approach which did yield the correct data.
 
-## Exploratory Data Analysis (EDA)
+## Part 2: Exploratory Data Analysis (EDA)
 Most of Triage categories across all the hospitals had at least some missing data. Given that this data is a Time Series with a fixed daily frequency, we cannot have any missing data. So I opted to perform some simple static imputation using the calculated Median values by column.
 
+With regards to the below, for the code and the plots generated, please refer to the `src.decomposition_models` module and the `/charts_reports` directory the plots themselves.
+
 ### STL (Seasonality-Trend decomposition using LOESS) model for Royal Perth Hospital (Triage Category 1)
-For the code and the plots generated please refer to the `src.decomposition_models` module and the `/charts_reports` directory the plots themselves.
+STL LOESS/LOWESS stands for 'Seasonal and Trend decomposition using LOcally Estimated Scatterplot Smoothing'/'Locally Weighted Scatterplot Smoothing'. This method is a more robust version of the Classical Seasonal Decomposition method since its LOESS capability allows it to uncover non-linear relationships.
+- Conceptual reference: https://otexts.com/fpp2/stl.html (more basic) and https://www.wessa.net/download/stl.pdf (very good research paper with more concise Mathematical definitions of the algo)
+When using STL Decomposition to smooth over some of the variable spikes in patient activity the length of the time series, we can see that there is a relatively flat trend that is relatively stable. In saying that, there is stronger seasonality present over November 2013, and again in June 2014. With respect to spikes in activity, August 31 2013 & June 29 2014 saw Tri_1 activity spike to 15 for both those days. 
 
 ### MSTL (Multiple Seasonality-Trend decomposition using LOESS) for Outlier Detection at Royal Perth Hospital (Triage Category 1)
 - According to the researcher, Rob Hyndman, MSTL can be used for outlier detection if the Seasonality and Trend components are ignored (https://robjhyndman.com/hyndsight/tsoutliers/). 
@@ -52,3 +56,8 @@ For the code and the plots generated please refer to the `src.decomposition_mode
 $$y_t = T_t + S_t + R_t$$
 <!-- Centered equation -->
 - Anything that is $<3\sigma$ in the residuals can be regarded as noise in the data for which the model cannot account and is stored in the $R_t$ component. The decision for using $3\sigma$ came from some quick research conducted, and was validated by a lesson found published by <a href='https://online.stat.psu.edu/stat501/lesson/11/11.3#:~:text=The%20good%20thing%20about%20internally,is%20generally%20deemed%20an%20outlier.'>Penn State University</a>.
+
+## Part 3: Differences between the hospitals based on the given data
+
+
+## Part 4: Forecast model for Triage category 1 at Royal Perth Hospital
