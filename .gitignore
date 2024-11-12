@@ -1,4 +1,1 @@
 __pycache__/
-
-# Exclude all the generated plots and reports
-*.html

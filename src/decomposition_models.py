@@ -1,3 +1,4 @@
+from typing import TextIO
 import pandas as pd
 from statsmodels.tsa.seasonal import STL, MSTL
 import numpy as np
@@ -23,8 +24,8 @@ preprocessed_df = preprocessed_df.fillna(preprocessed_df[['Attendance', 'Admissi
        'Tri_5']].median())
 
 
-######## Fit both Decomposition models generate plots, and save plots to storage ########
-def STL_Decomposition(preprocessed_df):
+######## Fit STL Decomposition model, generate plots, and save plots to storage ########
+def STL_Decomposition(preprocessed_df) -> TextIO:
     print('Training STL Decomposition model...')
     # Fit STL Decomposition model by column names
     model_robust = STL(preprocessed_df['Tri_1'],
@@ -80,8 +81,8 @@ def STL_Decomposition(preprocessed_df):
         plot.write(fig.to_html(include_plotlyjs='cdn'))
 
 
-######## Fit MSTL Decomposition model by column names to determine if there are outliers ########
-def MSTL_Outlier_Detection(preprocessed_df):
+######## Fit MSTL Decomposition model to determine if there are outliers ########
+def MSTL_Outlier_Detection(preprocessed_df) -> TextIO:
     """Outlier detection for MSTL has been defined as 3 Standard Deviations
     away from the mean in the Residuals component of the MSTL equation.
     If there are no dots on the resulting plot, we can infer no perceivable 
@@ -95,7 +96,7 @@ def MSTL_Outlier_Detection(preprocessed_df):
     mstl = mstl_robust.fit()
 
     residuals = mstl.resid
-    # Set outlier threshold to be 3 * standard deviation of the model's residuals
+    # Set outlier threshold to be 3 * Standard Deviation of the model's residuals
     threshold = 3 * np.std(residuals)
     outliers = np.abs(residuals) > threshold
 
