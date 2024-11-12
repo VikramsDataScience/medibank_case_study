@@ -12,13 +12,13 @@
 - N/A - Values is less than 3 and has been suppressed.
 
 ## Preprocessing
-I had initially intended to use Pandas' MultiIndexing capability, specifically `pd.MultiIndex.from_tuples()` to create a multi level index to access the tuple pairs in the dataset, given that this data set has two levels (Hospital, and the associated ED Metrics such as the Attendance, Admissions, etc.). However, with the dataset has been set up in a slightly odd fashion, whereby, the following code I had initially written:
+I had initially intended to use Pandas' MultiIndexing capability, specifically `pd.MultiIndex.from_tuples()` to create a multi level index to access the tuple pairs in the dataset, given that this data set has two levels (Hospital, and the associated ED Metrics such as the Attendance, Admissions, etc.). However, the dataset has been set up in a slightly odd fashion, whereby, the following code I had initially written:
 ```
 df = pd.read_csv(data_path / "govhack3.csv", header=[0, 1])
 original_tuples = df.columns.to_list()
 df.columns = pd.MultiIndex.from_tuples(original_tuples, names=['Hospital', 'Metric'])
 ```
-Was only able to access the 'Attendance' metric. Despite quite a few efforts to debug and repair this issue, I was sadly unable to arrive at a good outcome. So, I had to opt for the more manual approach that can be found in the `src.preprocessing` module to be able to access a given hospital's metrics:
+Was only able to access the 'Attendance' metric:
 ```
 Metric  Attendance
 0              235
@@ -33,7 +33,10 @@ Metric  Attendance
 363            218
 364            234
 ```
-I apologise for not being able to get this working in the way that we would all like! But in the spirit of not wasting too much time, I opted for the other approach which did yield the correct data.
+
+Despite quite a few efforts to debug and repair this issue, I was sadly unable to arrive at a good outcome. So, I had to opt for the more manual approach that can be found in the `src.preprocessing` module to be able to access a given hospital's metrics.
+
+I apologise for not being able to get this working in the clean and robust way that we would all like! But in the spirit of not wasting too much time, I opted for the aforementioned approach which did yield the correct data.
 
 ## Exploratory Data Analysis (EDA)
 

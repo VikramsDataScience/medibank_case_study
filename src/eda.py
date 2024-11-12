@@ -13,7 +13,7 @@ for hospital_name in hospital_data_maps:
 
     # Generate ydata profile report and export to storage as an HTML document
     profile_report = ProfileReport(df,
-                                title=f"{hospital_name} Hospital EDA Report",
+                                title=f"{hospital_name} Hospital EDA Report".replace('_', ' '),
                                 tsmode=True, # Since the data is a Time Series activate the "tsmode"
                                 explorative=True)
 
