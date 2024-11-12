@@ -42,5 +42,7 @@ I apologise for not being able to get this working in the way that we would all 
 - According to the researcher, Rob Hyndman, MSTL can be used for outlier detection if the Seasonality and Trend components are ignored (https://robjhyndman.com/hyndsight/tsoutliers/). 
 - In accordance with this methodology, I've come up with the following implementation of his proposal. 
 - By plotting and examining the residuals (i.e. ignoring the Seasonality and Trend components, but maintaining them in the plots for comparison) that are 3 standard deviations ($\sigma$) away the model's residuals, we can regard them as outliers, rather than traditional noise that's contained in $R_t$ component of MSTL equation:
-<br> $$y_t = T_t + S_t + R_t$$
+<!-- Centered equation -->
+$$y_t = T_t + S_t + R_t$$
+<!-- Centered equation -->
 - Anything that is $<3\sigma$ in the residuals can be regarded as noise in the data for which the model cannot account and is stored in the $R_t$ component. The decision for using $3\sigma$ came from some quick research conducted, and was validated by a lesson found published by <a href='https://online.stat.psu.edu/stat501/lesson/11/11.3#:~:text=The%20good%20thing%20about%20internally,is%20generally%20deemed%20an%20outlier.'>Penn State University</a>.
