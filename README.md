@@ -39,11 +39,14 @@ Despite quite a few efforts to debug and repair this issue, I was sadly unable t
 I apologise for not being able to get this working in the clean and robust way that we would all like! But in the spirit of not wasting too much time, I opted for the aforementioned approach which did yield the correct data.
 
 ## Exploratory Data Analysis (EDA)
+Most of Triage categories across all the hospitals had at least some missing data. Given that this data is a Time Series with a fixed daily frequency, we cannot have any missing data. So I opted to perform some simple static imputation using the calculated Median values by column.
 
+### STL (Seasonality-Trend decomposition using LOESS) model for Royal Perth Hospital (Triage Category 1)
+For the code and the plots generated please refer to the `src.decomposition_models` module and the `/charts_reports` directory the plots themselves.
 
-### MSTL (Multiple Seasonal-Trend decomposition using LOESS) for Outlier Detection
+### MSTL (Multiple Seasonality-Trend decomposition using LOESS) for Outlier Detection at Royal Perth Hospital (Triage Category 1)
 - According to the researcher, Rob Hyndman, MSTL can be used for outlier detection if the Seasonality and Trend components are ignored (https://robjhyndman.com/hyndsight/tsoutliers/). 
-- In accordance with this methodology, I've come up with the following implementation of his proposal. 
+- In accordance with this methodology, I've come up with the implementation that can found in the `src.decomposition_models` module of his proposal. 
 - By plotting and examining the residuals (i.e. ignoring the Seasonality and Trend components, but maintaining them in the plots for comparison) that are 3 standard deviations ($\sigma$) away the model's residuals, we can regard them as outliers, rather than traditional noise that's contained in $R_t$ component of MSTL equation:
 <!-- Centered equation -->
 $$y_t = T_t + S_t + R_t$$
