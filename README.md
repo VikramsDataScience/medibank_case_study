@@ -12,7 +12,7 @@
 - N/A - Values is less than 3 and has been suppressed.
 
 ## Preprocessing
-I had initially intended to use Pandas' MultiIndexing capability, specifically `pd.MultiIndex.from_tuples()` to create a multi level index to access the tuple pairs in the dataset, given that this data set has two levels (Hospital, and the associated ED Metrics such as the Attendance, Admissions, etc.). However, the dataset has been set up in a slightly odd fashion, whereby, the following code I had initially written:
+I had initially intended to use Pandas' MultiIndexing capability, specifically `pd.MultiIndex.from_tuples()` (since the indexes they've created are tuple pairs) to create a multi level index to access the tuple pairs in the dataset, given that this data set has two levels (Hospital, and the associated ED Metrics such as the Attendance, Admissions, etc.). However, the dataset has been set up in a slightly odd fashion, whereby, the following code I had initially written:
 ```
 df = pd.read_csv(data_path / "govhack3.csv", header=[0, 1])
 original_tuples = df.columns.to_list()
@@ -36,7 +36,7 @@ Metric  Attendance
 
 Despite quite a few efforts to debug and repair this issue, I was sadly unable to arrive at a good outcome. So, I had to opt for the more manual approach that can be found in the `src.preprocessing` module to be able to access a given hospital's metrics.
 
-I apologise for not being able to get this working in the clean and robust way that we would all like! But in the spirit of not wasting too much time, I opted for the aforementioned approach which did yield the correct data.
+I apologise for not being able to get this working in the clean and robust way that we would all like! But in the spirit of not wasting too much time, I opted for the aforementioned approach which appeared to yield the correct data.
 
 ## Part 2: Exploratory Data Analysis (EDA)
 Most of Triage categories across all the hospitals had at least some missing data. Given that this data is a Time Series with a fixed daily frequency, we cannot have any missing data. So I opted to perform some simple static imputation using the calculated Median values by column.
@@ -62,7 +62,19 @@ $$y_t = T_t + S_t + R_t$$
 &nbsp; On outlier detection, there are 4 outliers detected by the MSTL algorithm - 31 August, 8 December 2013, 14 & 15 June 2014. This is certainly less than I expected but represents good news for the upcoming forecast model, as there are only 4 outliers that can cause the accuracy of any forecast for this time series to be adversely affected. Of course, this does depend on the length of the forecast horizon. Since EDs are driven by emergencies, it's generally better to only have short window forecasts (for instance, my 2nd project at Healthscope was a 3-day forecast of Presentations for Healthscope's 8 EDs). Longer horizon forecasts for data that can change rapidly would inevitably lead to a poor forecast.
 
 ## Part 3: Differences between the hospitals based on the given data
-An important lesson I learned at Healthscope was that each hospital is a microcosm of uniqueness when regarding patient activity! The assumptions that apply to one hospital don't tend to apply to others. 
+An important lesson I learned at Healthscope was that each hospital is a microcosm of uniqueness when assessing patient activity - the assumptions that apply to one hospital don't tend to apply to others! On that note, using the `y-data` profiling reports found in the `/charts_reports` directory, these are some of the differences I can note:
+- **Attendance/Admissions ratios**: When considering EDs, Attendance (or Presentations as we called them at Healthscope) to Admissions ratios are an important consideration, as it's quite routine practice to turn away patients for a variety of reasons (for instance, the patient's symptoms may not actually be urgent, or that the ED may already be full, etc.). For the hospitals listed in this dataset these were the ratios by site:
+    - Royal Perth: 74.36%
+    - Fremantle: 61.76%
+    - Princess Margaret: 33.64%
+    - King Edward: 23.91%
+    - Sir Charles: 93.42%
+    - Armadale: 33.73%
+    - Swan District: 57.81%
+    - Rockingham: 42.86%
+    - Joondalup: 43.62%
+&nbsp; As we can above, those ratios vary dramatically across each hospital!
+<br> &nbsp; 
 
 ## Part 4: Forecast model for Triage Category 1 at Royal Perth Hospital
 ### Model's Drivers
@@ -82,4 +94,4 @@ Cross-validated Mean Absolute Error (MAE): 2.01
 Cross-validated Mean Absolute Percentage Error (MAPE): 41.29%
 ```
 &nbsp; This was also surprising for me, as I expected the error to be much larger given the lengthy forecast horizon!
-&nbsp; For other wards, longer window forecasts will still have lower accuracy, but are still considered very achievable. Fon instance, my first project in Healthscope required developing 10-week forecast models that could predict patient activity for every time shift (AM, PM, Night Duty) for most of the wards (some wards, such as pediatrics, and a few others were deemed out-of-scope by the business) across Healthscope's 38 hospitals. 
+<br> &nbsp; For other wards, longer window forecasts will still have lower accuracy, but are still considered very achievable. For instance, my first project in Healthscope required developing 10-week forecast models that could predict patient activity for every time shift (AM, PM, Night Duty) for most of the wards (some wards, such as pediatrics, and a few others were deemed out-of-scope by the business) across Healthscope's 38 hospitals. 
