@@ -47,7 +47,9 @@ With regards to the below, for the code and the plots generated, please refer to
 STL LOESS/LOWESS stands for 'Seasonal and Trend decomposition using LOcally Estimated Scatterplot Smoothing'/'Locally Weighted Scatterplot Smoothing'. This method is a more robust version of the Classical Seasonal Decomposition method since its LOESS capability allows it to uncover non-linear relationships.
 - Conceptual reference: https://otexts.com/fpp2/stl.html (more basic) and https://www.wessa.net/download/stl.pdf (very good research paper with more concise Mathematical definitions of the algo).
 
-&nbsp; When using STL Decomposition to smooth over some of the variable spikes in patient activity over the length of the time series, we can see that there is a relatively flat trend that is quite stable. In saying that, there is stronger seasonality present over November 2013, and again in June 2014. There's a good chance that this is attributable to holiday periods. 
+&nbsp; When using STL Decomposition to smooth over some of the variable spikes in patient activity over the length of the time series, we can see that there is a relatively stable trend that over the time series. In saying that the following two things did occur: 
+- There is stronger seasonality present over November 2013, and again in June 2014. There's a good chance that this is attributable to holiday periods
+- There was also a significant dip and then return to normal trend over October 2013 and again over June 2014. There are school holidays during both those periods. It's quite possible those could be a cause for the change in activity levels.
 &nbsp; With respect to spikes in activity, August 31 2013 & June 29 2014 saw 'Tri_1' activity spike to 15 for both those days. As can be the case with ED, this could be the result of a nearby accident or emergency event that resulted in a spike for urgent medical attention.
 
 ### MSTL (Multiple Seasonality-Trend decomposition using LOESS) for Outlier Detection at Royal Perth Hospital (Triage Category 1)
@@ -74,7 +76,16 @@ An important lesson I learned at Healthscope was that each hospital is a microco
     - Rockingham: 42.86%
     - Joondalup: 43.62%
 &nbsp; As we can above, those ratios vary dramatically across each hospital!
-<br> &nbsp; 
+<br><br> &nbsp; There are also significant differences in the number of Triage 1 categories admissions between sites:
+    - Royal Perth: 1438
+    - Fremantle: 268
+    - Princess Margaret: 80
+    - King Edward: 0
+    - Sir Charles: 783
+    - Armadale: 69
+    - Swan District: 109
+    - Rockingham: 32
+    - Joondalup: 152
 
 ## Part 4: Forecast model for Triage Category 1 at Royal Perth Hospital
 ### Model's Drivers
