@@ -75,8 +75,8 @@ An important lesson I learned at Healthscope was that each hospital is a microco
     - Swan District: 57.81%
     - Rockingham: 42.86%
     - Joondalup: 43.62%
-&nbsp; As we can above, those ratios vary dramatically across each hospital!
-<br><br> &nbsp; There are also significant differences in the number of Triage 1 categories admissions between sites:
+<br><br> As we can above, those ratios vary dramatically across each hospital!
+<br> There are also significant differences in the number of Triage 1 categories admissions between sites:
     - Royal Perth: 1438
     - Fremantle: 268
     - Princess Margaret: 80
