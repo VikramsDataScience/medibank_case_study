@@ -8,14 +8,14 @@ import numpy as np
 # Relative imports
 from . import charts_reports_path, suppress_statsmodels_warnings
 
-forecast_horizon = 3
-n_splits = 3
+forecast_horizon = 358
+n_splits = 1
 mae_list = []
 mape_list = []
 
-
+# Read file and impute NaNs with 0, since values < 3 and are suppressed
 preprocessed_df = pd.read_csv(charts_reports_path / "preprocessed_royal_perth_data.csv", 
-                            parse_dates=['Date'])
+                            parse_dates=['Date']).fillna(0)
 
 min_date = preprocessed_df['Date'].min()
 max_date = preprocessed_df['Date'].max()
@@ -24,10 +24,6 @@ preprocessed_df.index = pd.date_range(start=min_date,
                           freq='D')
 preprocessed_df = preprocessed_df.set_index('Date', 
                                             verify_integrity=True)
-
-# Perform median value imputation
-preprocessed_df = preprocessed_df.fillna(preprocessed_df[['Attendance', 'Admissions', 'Tri_1', 'Tri_2', 'Tri_3', 'Tri_4',
-       'Tri_5']].median())
 
 
 # Rolling-origin cross-validation loop
@@ -42,22 +38,28 @@ def calculate_cross_validation(df):
                                  ARIMA, 
                                  model_kwargs={"order": (2, 1, 0)}, 
                                  robust=True, 
-                                 seasonal=13)
+                                 seasonal=7)
               stlf_result = stlf.fit()
               forecast = stlf_result.forecast(steps=forecast_horizon)
               
               # Calculate errors
               mae = mean_absolute_error(test_data, forecast)
-              mape = np.mean(np.abs((test_data - forecast) / test_data)) * 100
+              # Avoid division by zero with non_zero_mask
+              non_zero_mask = test_data != 0
+              mape = np.mean(np.abs((test_data[non_zero_mask] - forecast[non_zero_mask]) / test_data[non_zero_mask])) * 100
               
               mae_list.append(mae)
               mape_list.append(mape)
 
-       # Since there are 3-folds in the train/test split, calculate the average of the error across 3-folds
-       mean_mae = np.mean(mae_list)
-       mean_mape = np.mean(mape_list)
-       print(f'Cross-validated Mean Absolute Error (MAE): {mean_mae:.2f}')
-       print(f'Cross-validated Mean Absolute Percentage Error (MAPE): {mean_mape:.2f}%')
+       # If n-folds > 1 in the train/test split, calculate the average of the error across them
+       if n_splits > 1:
+              mean_mae = np.mean(mae_list)
+              mean_mape = np.mean(mape_list)
+              print(f'Cross-validated Mean Absolute Error (MAE): {mean_mae:.2f}')
+              print(f'Cross-validated Mean Absolute Percentage Error (MAPE): {mean_mape:.2f}%')
+       else:
+              print(f'Cross-validated Mean Absolute Error (MAE): {mae:.2f}')
+              print(f'Cross-validated Mean Absolute Percentage Error (MAPE): {mape:.2f}%')
 
 
 @suppress_statsmodels_warnings
@@ -66,14 +68,14 @@ def train_forecast_model(df):
                      ARIMA, 
                      model_kwargs={"order": (2, 1, 0)},
                      robust=True,
-                     seasonal=13)  # Adjust `seasonal` based on periodicity
+                     seasonal=7)
 
        # Fit the model
        stlf_result = stlf.fit()
        # Print summary of the fitted model
        print(stlf_result.summary())
 
-       # Generate 3-day forecast
+       # Generate forecast
        forecast = stlf_result.forecast(steps=forecast_horizon)
        plt.figure(figsize=(20,6))
        plt.plot(df['Tri_1'])
