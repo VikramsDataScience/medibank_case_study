@@ -39,7 +39,7 @@ Despite quite a few efforts to debug and repair this issue, I was sadly unable t
 I apologise for not being able to get this working in the clean and robust way that we would all like! But in the spirit of not wasting too much time, I opted for the aforementioned approach which appeared to yield the correct data.
 
 ## Part 2: Exploratory Data Analysis (EDA)
-Most of Triage categories across all the hospitals had at least some missing data. Given that this data is a Time Series with a fixed daily frequency, we cannot have any missing data. So I opted to perform some simple static imputation using the calculated Median values by column.
+Most of Triage categories across all the hospitals had at least some missing data, since the activity levels that are <3 are suppressed. Given that this data is a Time Series with a fixed daily frequency, we cannot have any missing data. So I opted to impute 0s into the columns.
 
 With regards to the below, for the code and the plots generated, please refer to the `src.decomposition_models` module and the `/charts_reports` directory for the plots.
 
@@ -59,7 +59,7 @@ $$y_t = T_t + S_t + R_t$$
 <!-- Centered equation -->
 - Anything that is $<3\sigma$ in the residuals can be regarded as noise in the data for which the model cannot account and is stored in the $R_t$ component. The decision for using $3\sigma$ came from some quick research conducted, and was validated by a lesson found published by <a href='https://online.stat.psu.edu/stat501/lesson/11/11.3#:~:text=The%20good%20thing%20about%20internally,is%20generally%20deemed%20an%20outlier.'>Penn State University</a>.
 
-&nbsp; On outlier detection, there are 4 outliers detected by the MSTL algorithm - 31 August, 8 December 2013, 14 & 15 June 2014. This is certainly less than I expected but represents good news for the upcoming forecast model, as there are only 4 outliers that can cause the accuracy of any forecast for this time series to be adversely affected. Of course, this does depend on the length of the forecast horizon. Since EDs are driven by emergencies, it's generally better to only have short window forecasts (for instance, my 2nd project at Healthscope was a 3-day forecast of Presentations for Healthscope's 8 EDs). Longer horizon forecasts for data that can change rapidly would inevitably lead to a poor forecast.
+&nbsp; On outlier detection, there are only 2 outliers detected by the MSTL algorithm - one on 31 August 2013 and the other on 8 December 2013. This is certainly less than I expected but represents good news for the upcoming forecast model, as there are only 2 outliers that can cause the accuracy of any forecast for this time series to be adversely affected. Of course, this does depend on the length of the forecast horizon (more on that below). Since EDs are driven by emergencies, it's generally better to only have short window forecasts (for instance, my 2nd project at Healthscope was a 3-day forecast of Presentations for Healthscope's 8 EDs). Longer horizon forecasts for data that can change rapidly would inevitably lead to a poor forecast.
 
 ## Part 3: Differences between the hospitals based on the given data
 An important lesson I learned at Healthscope was that each hospital is a microcosm of uniqueness when assessing patient activity - the assumptions that apply to one hospital don't tend to apply to others! On that note, using the `y-data` profiling reports found in the `/charts_reports` directory, these are some of the differences I can note:
@@ -90,8 +90,8 @@ An important lesson I learned at Healthscope was that each hospital is a microco
 - **Too long a forecast horizon**: The ask in the case study was to predict 2015 activity based on 365 days of 2013-2014 data. This implies a forecast horizon of about 1 year. With the nature of Cross Validation to calculate the OOS prediction error, I was able to generate an Out-Of-Sample Forecast of a maximum of 358 days. Anything beyond this would raise errors, since there wasn't sufficient training data to calculate CV for a full 365 days. So, we can say it's just shy of 1 year! 
 &nbsp; But, as was discussed in the Outlier detection section, especially for EDs, it's best to only develop short window forecasts. This is especially so, given the very limited training data. However, in saying that, the Cross Validated accuracy for the simple 358 day forecast was:
 ```
-Cross-validated Mean Absolute Error (MAE): 2.01
-Cross-validated Mean Absolute Percentage Error (MAPE): 41.29%
+Cross-validated Mean Absolute Error (MAE): 2.85
+Cross-validated Mean Absolute Percentage Error (MAPE): 52.47%
 ```
 &nbsp; This was also surprising for me, as I expected the error to be much larger given the lengthy forecast horizon!
 <br> &nbsp; For other wards, longer window forecasts will still have lower accuracy, but are still considered very achievable. For instance, my first project in Healthscope required developing 10-week forecast models that could predict patient activity for every time shift (AM, PM, Night Duty) for most of the wards (some wards, such as pediatrics, and a few others were deemed out-of-scope by the business) across Healthscope's 38 hospitals. 
