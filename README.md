@@ -59,14 +59,14 @@ $$y_t = T_t + S_t + R_t$$
 <!-- Centered equation -->
 - Anything that is $<3\sigma$ in the residuals can be regarded as noise in the data for which the model cannot account and is stored in the $R_t$ component. The decision for using $3\sigma$ came from some quick research conducted, and was validated by a lesson found published by <a href='https://online.stat.psu.edu/stat501/lesson/11/11.3#:~:text=The%20good%20thing%20about%20internally,is%20generally%20deemed%20an%20outlier.'>Penn State University</a>.
 
-&nbsp; On outlier detection, there are 4 outliers detected by the MSTL algorithm - 31 August, 8 December 2013, 14 & 15 June 2014. This is good news for the upcoming forecast model, as there are only 4 outliers that can cause the accuracy of any forecast for this time series to be adversely affected. Of course, this does depend on the length of the forecast horizon. Since EDs are driven by emergencies, it's generally better to only have short window forecasts (for instance, my 2nd project at Healthscope was a 3-day forecast of Presentations for Healthscope's 8 EDs). Longer horizon forecasts for data that can change rapidly would inevitably lead to a poor forecast.
+&nbsp; On outlier detection, there are 4 outliers detected by the MSTL algorithm - 31 August, 8 December 2013, 14 & 15 June 2014. This is certainly less than I expected but represents good news for the upcoming forecast model, as there are only 4 outliers that can cause the accuracy of any forecast for this time series to be adversely affected. Of course, this does depend on the length of the forecast horizon. Since EDs are driven by emergencies, it's generally better to only have short window forecasts (for instance, my 2nd project at Healthscope was a 3-day forecast of Presentations for Healthscope's 8 EDs). Longer horizon forecasts for data that can change rapidly would inevitably lead to a poor forecast.
 
 ## Part 3: Differences between the hospitals based on the given data
 An important lesson I learned at Healthscope was that each hospital is a microcosm of uniqueness when regarding patient activity! The assumptions that apply to one hospital don't tend to apply to others.
 
-## Part 4: Forecast model for Triage category 1 at Royal Perth Hospital
+## Part 4: Forecast model for Triage Category 1 at Royal Perth Hospital
 ### Model's Drivers
-- 1 year of training data
+- 1 year of training data for Triage Category 1 activity at Royal Perth Hospital over 2013-2014
 - The trends and cyclical components over that 1 year
 
 ### Model's Limitations
@@ -74,4 +74,11 @@ An important lesson I learned at Healthscope was that each hospital is a microco
 - **No Exogenous features**: Under the hood, the STLForecast is basically an ARIMA model that predicts trends and cyclicalities that are infered from the training data. However, forecasting is a very complex and highly sensitive body of work that requires exogenous features to enrich the $\hat{y}$ predictor! For instance, at Healthscope when developing the 3-day ED Presentations forecast model, after extensive experimentation and exploration of the data, I was finally able to find that transfer_reason, type, arrival, triage_category, and value were the most effective 5 exogenous categorical features that would enrich the $\hat{y}$ predictor (Presentations) and reduce the MAE and MAPE measures of error during Cross Validation. Something of that nature would be needed here, as well.
 - **Seasonality not included**: Since this is quite a simple ARIMA model, Seasonality is not included. However, the STL Decomposition EDA does detect the presence of seasonality in the data that varies over the time series.
 - **No holiday effects**: Much like seasonality, holidays have a substantial effect on ED patient activity. During the development of the Healthscope ED Presentations model, it would found that the Christmas/NY period was the time when the most number of accidents tend to occur in the home that generate visits to the ED - especially falls from ladders. Those were quite common as more people were using their holidays to perform DIY repairs around the home, resulting in more accidents.
-- **Too long a forecast horizon**: 
+- **Too long a forecast horizon**: The ask in the case study was to predict 2015 activity based on 365 days of 2013-2014 data. This implies a forecast horizon of about 1 year. With the nature of Cross Validation to calculate the OOS prediction error, I was able to generate an Out-Of-Sample Forecast of a maximum of 358 days. Anything beyond this would raise errors, since there wasn't sufficient training data to calculate CV for a full 365 days. So, we can say it's just shy of 1 year! 
+&nbsp; But, as was discussed in the Outlier detection section, especially for EDs, it's best to only develop short window forecasts. This is especially so, given the very limited training data. However, in saying that, the Cross Validated accuracy for the simple 358 day forecast was:
+```
+Cross-validated Mean Absolute Error (MAE): 2.01
+Cross-validated Mean Absolute Percentage Error (MAPE): 41.29%
+```
+&nbsp; This was also surprising for me, as I expected the error to be much larger given the lengthy forecast horizon!
+&nbsp; For other wards, longer window forecasts will still have lower accuracy, but are still considered very achievable. Fon instance, my first project in Healthscope required developing 10-week forecast models that could predict patient activity for every time shift (AM, PM, Night Duty) for most of the wards (some wards, such as pediatrics, and a few others were deemed out-of-scope by the business) across Healthscope's 38 hospitals. 
