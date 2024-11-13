@@ -10,7 +10,7 @@ from . import charts_reports_path
 
 name = 'Royal Perth Triage Category 1'
 preprocessed_df = pd.read_csv(charts_reports_path / "preprocessed_royal_perth_data.csv", 
-                              parse_dates=['Date'])
+                              parse_dates=['Date']).fillna(0)
 
 min_date = preprocessed_df['Date'].min()
 max_date = preprocessed_df['Date'].max()
@@ -18,10 +18,6 @@ preprocessed_df.index = pd.date_range(start=min_date,
                           end=max_date, 
                           freq='D')
 preprocessed_df = preprocessed_df.set_index('Date', verify_integrity=True)
-
-# Perform median value imputation
-preprocessed_df = preprocessed_df.fillna(preprocessed_df[['Attendance', 'Admissions', 'Tri_1', 'Tri_2', 'Tri_3', 'Tri_4',
-       'Tri_5']].median())
 
 
 ######## Fit STL Decomposition model, generate plots, and save plots to storage ########
