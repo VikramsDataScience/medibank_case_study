@@ -65,7 +65,7 @@ $$y_t = T_t + S_t + R_t$$
 
 ## Part 3: Differences between the hospitals based on the given data
 An important lesson I learned at Healthscope was that each hospital is a microcosm of uniqueness when assessing patient activity - the assumptions that apply to one hospital don't tend to apply to others! On that note, using the `y-data` profiling reports found in the `/charts_reports` directory, these are some of the differences I can note:
-- **Attendance/Admissions ratios**: When considering EDs, Attendance (or Presentations as we called them at Healthscope) to Admissions ratios are an important consideration, as it's quite routine practice to turn away patients for a variety of reasons (for instance, the patient's symptoms may not actually be urgent, or that the ED may already be full, etc.). For the hospitals listed in this dataset these were the ratios by site:
+- **Attendance/Admissions ratios**: When considering EDs, Attendance (or Presentations as we called them at Healthscope) to Admissions ratios are an important consideration, as it's quite routine practice to turn away patients for a variety of reasons (for instance, the patient's symptoms may not actually be urgent, or that the ED may already be full, etc.). For the hospitals listed in this dataset these were the ratios by site. As we can below, the ratios vary dramatically across each hospital!:
     - Royal Perth: 74.36%
     - Fremantle: 61.76%
     - Princess Margaret: 33.64%
@@ -75,17 +75,19 @@ An important lesson I learned at Healthscope was that each hospital is a microco
     - Swan District: 57.81%
     - Rockingham: 42.86%
     - Joondalup: 43.62%
-<br><br> As we can above, those ratios vary dramatically across each hospital!
-<br> There are also significant differences in the number of Triage 1 categories admissions between sites:
-    - Royal Perth: 1438
-    - Fremantle: 268
-    - Princess Margaret: 80
-    - King Edward: 0
-    - Sir Charles: 783
-    - Armadale: 69
-    - Swan District: 109
-    - Rockingham: 32
-    - Joondalup: 152
+
+There are also significant differences in the number of Triage 1 category admissions between sites:
+<ul>
+  <li>Royal Perth: 1438</li>
+    <li>Fremantle: 268</li>
+    <li>Princess Margaret: 80</li>
+    <li>King Edward: 0</li>
+    <li>Sir Charles: 783</li>
+    <li>Armadale: 69</li>
+    <li>Swan District: 109</li>
+    <li>Rockingham: 32</li>
+    <li>Joondalup: 152</li>
+</ul>
 
 ## Part 4: Forecast model for Triage Category 1 at Royal Perth Hospital
 ### Model's Drivers
