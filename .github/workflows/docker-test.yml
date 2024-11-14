@@ -1,0 +1,38 @@
+name: Test Docker Container
+
+on:
+    push:
+        branches:
+            - '**'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            # Checkout the repository
+            - name: Checkout code
+              uses: actions/checkout@v3
+      
+            # Set up Docker Buildx
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v2
+      
+            # Build the Docker image
+            - name: Build Docker Image
+              run: |
+                docker build -t medibank_case_study .
+      
+            # Test the Docker container by running it
+            - name: Run Docker Container
+              run: |
+                docker run medibank_case_study python -m src.preprocessing
+                docker run medibank_case_study python -m src.decomposition_models
+                docker run medibank_case_study python -m src.eda
+                docker run medibank_case_study python -m src.forecast
+                docker run medibank_case_study python -m src.doctors_required_royal_perth
+      
+            # Verify the container is running as expected
+            - name: Verify container output
+              run: |
+                echo "The Docker container has been successfully tested!"
