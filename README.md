@@ -108,3 +108,29 @@ Cross-validated Mean Absolute Percentage Error (MAPE): 52.47%
 ```
 &nbsp; This was also surprising for me, as I expected the error to be much larger given the lengthy forecast horizon!
 <br> &nbsp; For other wards, longer window forecasts will still have lower accuracy, but are still considered very achievable. For instance, my first project in Healthscope required developing 10-week forecast models that could predict patient activity for every time shift (AM, PM, Night Duty) for most of the wards (some wards, such as pediatrics, and a few others were deemed out-of-scope by the business) across Healthscope's 38 hospitals. 
+
+## Part 5: Doctors required for Royal Perth ED on specified dates
+Please refer to `src.doctors_required_royal_perth` for the code developed to answer this question.
+
+**N.B.** The questions asks for the number of the doctors needed for the 1/1/14 and the 24/7/14. However, the latest date in the dataset is 30/06/2014 (output below is from the code in the `src.doctors_required_royal_perth`):
+```
+Max date in the dataset:  2014-06-30
+```
+Due to this limitation I've instead run the prediction for the 1/1/14 and the 30/06/14. I hope that's okay?
+
+The code developed followed the following reasoning:
+- A doctor can work up to 10 hours and treat 1 patient every 30 minutes
+- The most important labour constraint is that the maximum number of patients a doctor can treat within a 10-hour shift would be:
+<!-- Centered equation -->
+$$\frac{10 \times 60}{30} = 20$$
+<!-- Centered equation -->
+- In my python implementation of the above calculation, I chose to use floor division to round down the constraint to the nearest integer so as to create a more conservative calculation, since a fatigued doctor is more likely to make critical mistakes.
+- From here, I've constructed a for loop to iterate through the 2 required dates and generate the following output:
+```
+Attendance for dates of interest:
+           Date  Attendance
+184 2014-01-01         222
+364 2014-06-30         234
+No. of doctors required on 2014-01-01:  11
+No. of doctors required on 2014-06-30:  12
+```
