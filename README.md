@@ -107,6 +107,8 @@ Cross-validated Mean Absolute Error (MAE): 2.85
 Cross-validated Mean Absolute Percentage Error (MAPE): 52.47%
 ```
 &nbsp; This was also surprising for me, as I expected the error to be much larger given the lengthy forecast horizon!
+
+**N.B.** If you're interested, all the output referenced in this README file can also be found in the following GitHub runner in the <a href="https://github.com/VikramsDataScience/medibank_case_study/actions/runs/11829105284/job/32960349828">Run Docker Container</a> section of the CI Workflow. This way you can verify that the output is real :)!
 <br> &nbsp; For other wards, longer window forecasts will still have lower accuracy, but are still considered very achievable. For instance, my first project in Healthscope required developing 10-week forecast models that could predict patient activity for every time shift (AM, PM, Night Duty) for most of the wards (some wards, such as pediatrics, and a few others were deemed out-of-scope by the business) across Healthscope's 38 hospitals. 
 
 ## Part 5: Doctors required for Royal Perth ED on specified dates
@@ -125,7 +127,7 @@ The code developed followed the following reasoning:
 $$\frac{10 \times 60}{30} = 20$$
 <!-- Centered equation -->
 - In my python implementation of the above calculation, I chose to use floor division to round down the constraint to the nearest integer so as to create a more conservative calculation, since a fatigued doctor is more likely to make critical mistakes.
-- From here, I've constructed a for loop to iterate through the 2 required dates and generate the following output (if you're interested, all this output can also be found in the following GitHub runner in the <a href="https://github.com/VikramsDataScience/medibank_case_study/actions/runs/11829105284/job/32960349828">Run Docker Container</a> section of the CI Workflow. This way you can verify the output is real :):
+- From here, I've constructed a for loop to iterate through the 2 required dates and generate the following output:
 ```
 Attendance for dates of interest:
            Date  Attendance
