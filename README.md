@@ -125,7 +125,7 @@ The code developed followed the following reasoning:
 $$\frac{10 \times 60}{30} = 20$$
 <!-- Centered equation -->
 - In my python implementation of the above calculation, I chose to use floor division to round down the constraint to the nearest integer so as to create a more conservative calculation, since a fatigued doctor is more likely to make critical mistakes.
-- From here, I've constructed a for loop to iterate through the 2 required dates and generate the following output:
+- From here, I've constructed a for loop to iterate through the 2 required dates and generate the following output (if you're interested, all this output can also be found in the following GitHub runner in the <a href="https://github.com/VikramsDataScience/medibank_case_study/actions/runs/11829105284/job/32960349828">Run Docker Container</a> section of the CI Workflow. This way you can verify the output is real :):
 ```
 Attendance for dates of interest:
            Date  Attendance
