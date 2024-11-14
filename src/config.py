@@ -1,5 +1,5 @@
 class Config:
     def __init__(self):
-        self.data_path = "C:/medibank_case_study/data"
-        self.case_study_path = "C:/medibank_case_study"
-        self.charts_reports_path = "C:/medibank_case_study/charts_reports"
+        self.data_path = "/app/data"
+        self.case_study_path = "/app"
+        self.charts_reports_path = "/app/charts_reports"
