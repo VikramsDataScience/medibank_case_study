@@ -6,10 +6,10 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 # Relative imports
-from . import charts_reports_path
+from . import data_path
 
 name = 'Royal Perth Triage Category 1'
-preprocessed_df = pd.read_csv(charts_reports_path / "preprocessed_royal_perth_data.csv", 
+preprocessed_df = pd.read_csv(data_path / "preprocessed_royal_perth_data.csv", 
                               parse_dates=['Date']).fillna(0)
 
 min_date = preprocessed_df['Date'].min()
