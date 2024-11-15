@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 # Relative imports
-from . import data_path
+from . import data_path, charts_reports_path
 
 name = 'Royal Perth Triage Category 1'
 preprocessed_df = pd.read_csv(data_path / "preprocessed_royal_perth_data.csv", 
