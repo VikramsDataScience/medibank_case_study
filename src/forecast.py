@@ -6,7 +6,7 @@ from sklearn.metrics import mean_absolute_error
 import numpy as np
 
 # Relative imports
-from . import charts_reports_path, suppress_statsmodels_warnings
+from . import data_path, suppress_statsmodels_warnings
 
 forecast_horizon = 358
 n_splits = 1
@@ -14,7 +14,7 @@ mae_list = []
 mape_list = []
 
 # Read file and impute NaNs with 0, since values < 3 and are suppressed
-preprocessed_df = pd.read_csv(charts_reports_path / "preprocessed_royal_perth_data.csv", 
+preprocessed_df = pd.read_csv(data_path / "preprocessed_royal_perth_data.csv", 
                             parse_dates=['Date']).fillna(0)
 
 min_date = preprocessed_df['Date'].min()

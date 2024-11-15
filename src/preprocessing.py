@@ -122,5 +122,5 @@ hospital_data_maps = {
 for hospital_name, data in hospital_data_maps.items():
         df = (pd.DataFrame(data)
                 .set_index('Date', verify_integrity=True)
-                .to_csv(charts_reports_path / f"preprocessed_{hospital_name}_data.csv"))
+                .to_csv(data_path / f"preprocessed_{hospital_name}_data.csv"))
         
