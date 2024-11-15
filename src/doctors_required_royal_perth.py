@@ -1,9 +1,9 @@
 import pandas as pd
 
 # Relative imports
-from . import charts_reports_path
+from . import data_path
 
-df = pd.read_csv(charts_reports_path / "preprocessed_royal_perth_data.csv", 
+df = pd.read_csv(data_path / "preprocessed_royal_perth_data.csv", 
                             parse_dates=['Date']).fillna(0)
 
 # Convert 'Date' to a proper datetime format for filtering
