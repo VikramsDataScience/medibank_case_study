@@ -6,7 +6,7 @@ from sklearn.metrics import mean_absolute_error
 import numpy as np
 
 # Relative imports
-from . import data_path, suppress_statsmodels_warnings
+from . import data_path, charts_reports_path, suppress_statsmodels_warnings
 
 forecast_horizon = 358
 n_splits = 1
