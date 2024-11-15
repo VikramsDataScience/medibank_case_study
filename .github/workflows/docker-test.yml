@@ -4,6 +4,8 @@ on:
     push:
         branches:
             - '**'
+        paths-ignore:
+            - 'README.md'
 
 jobs:
     build:
@@ -31,8 +33,5 @@ jobs:
                 docker run medibank_case_study python -m src.eda
                 docker run medibank_case_study python -m src.forecast
                 docker run medibank_case_study python -m src.doctors_required_royal_perth
-      
-            # Verify the container is running as expected
-            - name: Verify container output
-              run: |
                 echo "The Docker container has been successfully tested!"
+      
