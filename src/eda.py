@@ -2,11 +2,11 @@ import pandas as pd
 from ydata_profiling import ProfileReport
 
 # Relative imports
-from . import charts_reports_path
+from . import charts_reports_path, data_path
 from .preprocessing import hospital_data_maps
 
 for hospital_name in hospital_data_maps:
-    df = pd.read_csv(charts_reports_path / f"preprocessed_{hospital_name}_data.csv").fillna(0)
+    df = pd.read_csv(data_path / f"preprocessed_{hospital_name}_data.csv").fillna(0)
 
     # Generate ydata profile report and export to storage as an HTML document
     profile_report = ProfileReport(df,
